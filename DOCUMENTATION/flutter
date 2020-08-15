@@ -1,0 +1,152 @@
+SECTION 
+
+
+
+..aFTER INSTALLIN FLUTE ACCORDING TO THE INSTRUCTION ON THE SITE WE HIT A ERROR ON  ANADROID STUDIO ON INSTALLING THE DEVICE 
+
+SO WE HAD TO OPEN THE TERMINAL AND GIVE PERMISSION TO THE USER TO HANDLE THE DEVICE USING 
+
+
+sudo apt install qemu-kvm
+ls -la /dev/kvm
+grep /etc/group
+and then adduser and restart laptop 
+
+
+
+!!WELCOME FLUTTER APPLICATION 
+
+VOID MAIN IS THE MAIN ENTRY POINT OF THE APPLICATION 
+RUN APP HAS A WIDGET PARAM WHICH IS RUN ON THE START OF APP 
+WE USE PACKAGE MATERIAL.DART FOR THE MATERIAL DESIGN OF THE APPLICATION
+
+
+
+// materilapp widget params-title  whih is the app nameit is a class of imported package
+//we have title init nad can make home which can have a new insstance of material with color and child with center and text
+//just like html and cs  we can just add styling to the text or any element
+
+//Scaffold widget allow to add Appbar at the top of the appbar which later has the body
+  //center are ui elements are widgets
+    //everything is widget
+
+
+  //to know the params of a widget prerss ctrl+click on the widget
+  // purpose -inflate widget and attach it to screen
+
+
+
+
+
+MAIN DART
+
+
+
+
+import 'package:flutter/material.dart' ;
+import 'package:flutterap/new_page1.dart';
+//material widgets lib for material design developed by google which are basically the guidlines for all the applications
+
+//declare main method -entry ponint
+
+void main() =>
+
+  runApp(
+    new MyflutterApp()
+  ) ;
+
+
+
+
+
+
+    //center are ui elements are widgets
+    //everything is widget
+
+
+  //to know the params of a widget prerss ctrl+click on the widget
+  // purpose -inflate widget and attach it to screen
+
+class MyflutterApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title:"MY flutter app",
+        home :Scaffold(
+            appBar: AppBar(
+                title:Text('My First App Screen')
+
+            ),
+            body: FirstScreen()
+        )
+
+    )
+    ;
+  }
+
+}
+
+
+
+
+// materilapp widget params-title  whih is the app nameit is a class of imported package
+//we have title init nad can make home which can have a new insstance of material with color and child with center and text
+//just like html and cs  we can just add styling to the text or any element
+
+//Scaffold widget allow to add Appbar at the top of the appbar which later has the body
+
+
+
+
+
+
+FIRST SCREEN
+
+
+
+
+import 'dart:math';
+
+import 'package:flutter/material.dart' ;
+
+
+class FirstScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Material(
+        color: Colors.lightBlueAccent,
+        child: Center(
+          child: Text(
+            yourluckynumber(),//string interpolation like js
+            textDirection: TextDirection.ltr,
+            style: TextStyle(color: Colors.white, fontSize: 40.0),
+          ),
+        )
+    );
+  }
+
+  String yourluckynumber(){
+    var random= Random() ;
+    // instance of the Randomclass
+    int luckynumber =random.nextInt(10) ;
+
+    return "Your lucky number is ${luckynumber} ";
+
+  }
+}
+
+
+
+//data types are int String Double
+
+
+
+
+
+
+
+
+

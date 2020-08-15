@@ -1,0 +1,949 @@
+SECTION2
+
+
+
+IN THIS PART LETS LEARN ABOUT THE WIDGETS MORE :
+
+
+EVERYTHING IS WIDGET 
+
+
+
+
+SO MOST COMMONLY USED :
+
+
+
+
+
+ROWS ,COLUMNS
+TEXT 
+SCAFFOLD  APPBAR 
+RAISED BUTTON 
+ALERT DIALOG
+BOX CONSTRAINTS CONTTAINERS
+IMAGE 
+SIZE ,MARGIN, PADDING 
+LISTVIEW 
+FLOATING ACTION BUTTON 
+
+
+
+
+
+
+
+
+CONTAINER WIDGET :
+
+
+
+
+
+
+
+(MARGIN .BOX CONSTRAINTS ,SIZE ,MARGIN ,PADDING) 
+
+
+CONTAINER IS SAME AS THE HTML DIVISION 
+//alignment is the property while Alignment is the object 
+
+IN FLUTTER ALL THE WIDGETS HAVE SOME DIMENSIONS
+
+
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container( alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      width: 200.0,
+      height:100.0 ,
+      child : Text("HI WORLD",textDirection: TextDirection.ltr,)
+
+    );
+  }
+
+}
+//container is div
+
+
+
+THIS CODE ,THE HEIGHT AND WIDTH HAVE NO CHANGE ON THE DIMENSIONS BCOZ ?
+
+
+
+BOX CONSTRAINTS :
+
+
+
+
+EACH BOX IN FLUTTER HAVE SIZE DEPENDING ON THE CHILD AND PARENT
+HERE THE CONTAINER HAVE WHOLE SCREEN AS THE PARENT (MATERIALaPP) , SO HERE THE CONTAINER WIDGET IS TAKING THE ENTIRE SCREEN INHERITING FROM THE PARENT
+SO WE CAN HAVE PRIORITY WIDGETS : THAT IS WE CAN HAVE CERTAIN WIDGET WHICH GIVES PRIORITY TO THE HEIGHT AND WIDTH OF THE CHILD SO WRAP IT AROUND CONTAINER
+
+
+
+so it becomes :
+
+
+
+
+
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+     child: Container( alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      width: 200.0,
+      height:100.0 ,
+      child : Text("HI WORLD",textDirection: TextDirection.ltr,)
+      )
+
+    );
+  }
+
+}
+
+
+
+MARGIN :
+DISTANCE BETWEEN TWO WIDGETS 
+PADDING;
+DISTANCE BETWEEN BORDER AND THE CONTENTS OF WIDGET 
+
+
+MAR AND PADDCAN BE ADDED USING ------- for margin :EdgeInsets.All(20.0) for all direction or EdgeInsets.Only(right:10.0 ,)
+
+
+coded as:
+
+margin:EdgeInsets.only(top:10.0,right:10.0),
+padding:EdgeInsets.only(top:10.0,right:10.0),
+
+
+
+
+
+
+STYLING TEXT WIDGET :
+
+
+RN THERE AR TWO UNDERINES ON THE TEXT WHICH CAN BE REMOVED BY adding 
+style: TextStyle(
+        decoration: TextDecoration.none ,
+      ))
+
+IN THE TEXT WIDGET 
+
+FOR STYLINF FONTS JUST ADD 
+fontsize :   ;
+
+
+FONTFAMILY---------
+WE HAVE TO FOLLOW A PROCESS :
+1. dOWNLOAD AND IMPORT THE FONT IN THE MAIN FILE 
+2.DECLARE IT IN pubspec.yaml
+this file basically contains the dependencies and meta dataof ur project in android dev it is same as build.gradle file
+yaml -yant markup language --in many frameworks it is used to store config of applications ,dependencies etc 
+
+
+in pubsec.yaml file uncomment the fonts section using ctrl +/ and also in windows : cmd + /
+
+ANd change the file as 
+
+
+dowload it from the googl/fonts and then make fonts directory in the root directory of project and save fonts in it .
+
+fonts:
+     - family: Raleway
+       fonts:
+          - asset: fonts/Raleway-Regular.ttf
+          - asset: fonts/Raleway-Bold.ttf
+            weight : 700
+          - asset : fonts/Raleway-LightItalic.ttf
+            weight : 300
+            style: italic
+     - family: Roboto
+       fonts:
+          - asset: fonts/Roboto-Regular.ttf
+
+
+
+
+here the fonts asset can be changed as the name of rhe file ,special care to indention to be taken also two spaces of indention is given.(GIVE TWO SPACES AT INDENT )
+the bold font have a weight property for railway it is 700 can be seen at google/fonts.com same goes for the lightitalic font 
+
+If we want to add differnt font-familiy it is added in the similar way
+
+
+
+
+
+
+
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+     child: Container( alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      //width: 200.0,
+      //height:100.0 ,
+         //margin:EdgeInsets.all(10.0),
+        // margin:EdgeInsets.only(top:10.0,right:10.0),
+      child : Text("HI WORLD",
+        textDirection: TextDirection.ltr,
+      style: TextStyle(
+        decoration: TextDecoration.none ,
+        fontSize: 75.0 ,
+        fontFamily: 'Raleway',
+        color:Colors.white ,
+        fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+      ))
+      )
+
+    );
+  }
+
+}
+
+
+
+
+
+Imp :
+fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+
+
+
+
+
+
+
+NOW LETS SEE HOW TO USE rOWS AND COLUMNS :
+
+
+
+
+TO USE THE WORKING SPACE PROPERLY 
+
+
+HERE WE WILL SEE :
+ROW WIDGET 
+COLUMN WIDGET AND NESTING 
+
+ALSO EXPADED WIDGET AND ADDING PADDING AND STYLING AND MARGIN 
+
+
+ROW $ COLUMN WIDGET :
+
+ROW : | | | |          | REPRESENTS A WIDGET INSIDE A ROW WIDGET
+ 
+
+COLUMN :  _
+          _            _ REPRESENTS A WIDGET INSIDE A ROW WIDGET 
+          _        
+
+
+
+
+HERE WE WILL NOW ADD MULTIPLE TEXTS IN OUR PROJECT IN THE CURRENT PROJECT 
+ROW CAN HAVE MULTIPLE CHILD SO WE USE CHILDREN PROPERTY AND SPECIFY THE CHILDS IN THE WIDGWT ARRAY 
+
+children: <Widget>[
+widget1,
+widget2,
+widget3,
+.....],
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+     child: Container( alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      //width: 200.0,
+      //height:100.0 ,
+         //margin:EdgeInsets.all(10.0),
+        // margin:EdgeInsets.only(top:10.0,right:10.0),
+      child : Row(
+        children: <Widget>[
+          Text("HI WORLD",
+          textDirection: TextDirection.ltr,
+          style: TextStyle(
+            decoration: TextDecoration.none ,
+            fontSize: 75.0 ,
+            fontFamily: 'Raleway',
+            color:Colors.white ,
+            fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+          )),
+          Text("From begin to End",
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                decoration: TextDecoration.none ,
+                fontSize: 75.0 ,
+                fontFamily: 'Raleway',
+                color:Colors.white ,
+                fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+              )),
+
+
+
+      ],
+      ),
+
+
+    ));
+  }
+
+}
+
+
+Here we will see render overflow so we can use expanded widget(it forces elements of row/column in avaiblabe space ) it can be used by :
+
+Expanded(child: ,) 
+
+
+using it the row will be divided equally in all or we can define the width also 
+
+
+
+
+
+
+ROW IMPLEMENTATION :
+
+
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+     child: Container( alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      //width: 200.0,
+      //height:100.0 ,
+         //margin:EdgeInsets.all(10.0),
+        // margin:EdgeInsets.only(top:10.0,right:10.0),
+      child :
+      Row(
+        children: <Widget>[
+          Expanded(child:Text("HI WORLD",
+          textDirection: TextDirection.ltr,
+          style: TextStyle(
+            decoration: TextDecoration.none ,
+            fontSize: 35.0 ,
+            fontFamily: 'Raleway',
+            color:Colors.white ,
+            fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+          ))),
+          Expanded(child:Text("From begin to End",
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                decoration: TextDecoration.none ,
+                fontSize: 25.0 ,
+                fontFamily: 'Raleway',
+                color:Colors.white ,
+                fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+              ))),
+
+
+
+      ],
+      ),
+
+
+    ));
+  }
+
+}
+//container is div
+
+
+
+
+
+
+COLUMN IMPLEMENTATION :
+
+
+
+
+///to from code in AS press Alt+cmd+l
+to make columns look better we add paddding and margin to the container 
+column dont have padding and the alignment 
+
+
+
+
+
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'  ;
+
+
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+     child: Container(
+         padding: EdgeInsets.only(top:40.0 ,left:10.0),
+         alignment: Alignment.center,
+      color : Colors.deepPurple ,
+      //width: 200.0,
+      //height:100.0 ,
+         //margin:EdgeInsets.all(10.0),
+        // margin:EdgeInsets.only(top:10.0,right:10.0),
+      child :Column(
+
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(child:Text("Spice jet",
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    decoration: TextDecoration.none ,
+                    fontSize: 35.0 ,
+                    fontFamily: 'Raleway',
+                    color:Colors.white ,
+                    fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+                  ))),
+              Expanded(child:Text("From begin to End",
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    decoration: TextDecoration.none ,
+                    fontSize: 25.0 ,
+                    fontFamily: 'Raleway',
+                    color:Colors.white ,
+                    fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+                  ))),
+
+
+
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(child:Text("Air India",
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    decoration: TextDecoration.none ,
+                    fontSize: 35.0 ,
+                    fontFamily: 'Raleway',
+                    color:Colors.white ,
+                    fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+                  ))),
+              Expanded(child:Text("From begin to End",
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    decoration: TextDecoration.none ,
+                    fontSize: 25.0 ,
+                    fontFamily: 'Raleway',
+                    color:Colors.white ,
+                    fontWeight: FontWeight.w700,//this will get the font with 300 fontweight
+
+                  ))),
+
+
+
+            ],
+          ),
+
+
+        ],
+      )
+
+
+    ));
+  }
+
+}
+
+
+
+
+
+
+
+IMAGE ASSETS :
+
+
+
+
+USING IMAGE IN OUR APP BY LOADING IT FORM THE ASSESTS WHICH IS THE RESOURCES USED LOCALLY 
+
+same as fonts we also have to declare that we are using image in pubspec.yaml file also we have to create assets/images folder in the root app //INDENTION SHOULD BE CORRECT -TWO SPACES
+
+
+
+
+*WHEN PUBSPEC EDIT WARNING SHOWS JUST CLICK ON UPDATE DEPENDENCIES -THIS WILL  UPDATE THE PACKAGES 
+
+
+
+
+class FlightImageset extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    AssetImage assetImage =AssetImage('images/air-air-travel-airbus-aircraft-358319.jpg') ; //intializing the assest image
+    Image image= Image(image:assetImage,width:250.0,height:250.0) ; // instantiating the image class 
+    return Container(child:image) ;
+  }
+
+}
+
+
+
+
+
+RAISED BUTTON AND THE ALERT DIALOG :
+
+
+
+
+
+
+RAISED BUTTON IS BUTTON WITH SOME ELEVATION AND ALERT DIALOG IS POP UP DIALOG WHICH IS JUST WITH SOME MESSAGE
+
+
+
+
+
+class FlighBook extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin:EdgeInsets.only(top:10.0) ,
+        width:250.0,
+        height:50.0,
+        child: RaisedButton(
+            color: Colors.deepOrange ,
+            child:Text(
+            "Book the flight",
+            style:TextStyle(
+              fontSize: 20.0 ,
+              color: Colors.white ,
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.w700 ,
+            )),
+          elevation: 6,
+          onPressed: (){
+              bookFlight(context) ;
+
+
+          },
+          )
+
+        )
+    ;
+  }
+
+  void bookFlight(BuildContext context) {
+    var alertDialog= AlertDialog(
+      title : Text("Flight Booked Succesfully "),
+      content: Text("Have a pleasant flight"),
+    ) ;
+
+    showDialog(context: context,
+    builder:(BuildContext context){
+      return alertDialog ;
+    }) ;//Alertdialog constructor
+  }
+}
+
+
+/ builder is basically a function which accepts buildcontext and returns the alertbox
+
+//BuildContext is nothing but the info recived in stateless widget it implies the context in which the widge is build
+
+
+
+
+
+
+
+
+IMPLEMENTING THE LISTVIEW :
+
+
+ON RESTART WE HIT AN ERROR WITH THE .ANDROID/GRADLE FILE SO WE DID FOLLOWING 
+IN TERMINAL :
+chmod a+rx .android/gradlew for the permission denied thing 
+and it didn't work so we hit 
+flutter clean 
+
+WORKED LIKE CHARM (THOUGH I HAVE DOUBT ABOUT THIS ONE) .
+
+
+
+
+import 'package:flutter/material.dart';
+import './home.dart';
+
+void main() {
+  runApp(
+      MaterialApp(
+
+          title: " Ui widgets",
+          home: getListview()
+      )
+  )
+  ;
+}
+
+
+Widget getListview() {
+  var listview = ListView(
+    children: <Widget>[
+      ListTile(
+        leading: Icon(Icons.landscape),
+        title:Text("Landscape") ,
+        subtitle: Text("Beautiful View !"),
+        trailing:Icon(Icons.wb_sunny) ,
+      )
+    ],
+  )  ;           
+      //declaring the listview 
+  
+  
+  
+  return listview ;
+}  // definig the widgrt function for listview
+
+
+
+
+
+
+now the trailing and leading property expects a widget so we have passed icons as the widget .
+and we will call this widget function from the materialApp but this code will throw an error :
+when there is a scrollable widget it can overflow the screen so it should be never used in home direclty so we will use "Scaffold "
+
+
+ home: Scaffold(
+            body:getListview() ,
+          )
+      )
+
+
+change like this .
+
+
+ListTile is not the only widget to e used in the widget array we can use any like Text and etc
+
+
+ debugPrint("HI All") ; this will print in the terminal also we have same in dart languge 
+
+
+so basic list view is for short list items ,
+
+
+import 'package:flutter/material.dart';
+import './home.dart';
+
+void main() {
+  runApp(
+      MaterialApp(
+
+          title: " Ui widgets",
+          home: Scaffold(
+            appBar: AppBar(title:Text("Basic List View "),),
+            body:getListview() ,
+          )
+      )
+  )
+  ;
+}
+
+
+Widget getListview() {
+  var listview = ListView(
+    children: <Widget>[
+      ListTile(
+        leading: Icon(Icons.landscape),
+        title:Text("Landscape") ,
+        subtitle: Text("Beautiful View !"),
+        trailing:Icon(Icons.wb_sunny) ,
+        onTap: (){
+          debugPrint("HI All") ;
+        },
+      ),
+      ListTile(
+        leading: Icon(Icons.laptop_chromebook),
+        title:Text("Landscape") ,
+        subtitle: Text("Beautiful View !"),
+        trailing:Icon(Icons.wb_sunny) ,
+      ),
+      Text("Hello There ") ,
+      Container(color:Colors.blue,height:50.0 ), //height is important
+    ],
+  )  ;
+      //declaring the listview
+
+
+
+  return listview ;
+}  // definig the widgrt function for listview
+
+
+
+
+So BASIC LIST VIEW IS ONLY FOR SHORT LISTS AS IT WILL ACESS FROM MEMORY SO WE SHOULD NOT USE MANY ITEMS IN BASIC LIST VIEW AS IT IS NOT MEMORY EFFIECIENT ,
+
+
+
+sO NOW WE WILL USE LONG LISTS :
+
+FOR THIS FIRST WE HAV ETO PREPARE TH DATA SOURCE WHICH IS TO BE INFLATED AS LIST TITEMS 
+
+THEN WE HAVE TO CONVERT THE DATA SOURCE IN THE WIDGETS AND 
+
+AT LAST WE HAVE TO USE ALL THE WIDGETS AS THE CHILD OF LISTVIEW ,
+
+
+
+import 'package:flutter/material.dart';
+import './home.dart';
+
+void main() {
+  runApp(
+      MaterialApp(
+
+          title: " Ui widgets",
+          home: Scaffold(
+            appBar: AppBar(title:Text("lONG lIST  "),),
+            body:getListview() ,
+          )
+      )
+  )
+  ;
+}
+
+
+List<String> getListElements() {
+
+  var items= List<String>.generate(1000,(counter) => "Item $counter") ;
+  return items ;
+
+
+}
+
+
+Widget getListview() {
+
+  var listItems = getListElements() ;
+
+
+  var listview = ListView.builder(itemBuilder:(context,index){
+    return ListTile(
+       leading: Icon(Icons.wb_sunny),
+      title:Text(listItems[index]) ,
+         onTap: () {
+        debugPrint("Hi") ;
+      },
+    ) ;
+  }) ;
+
+
+  return listview ;
+}
+
+
+
+
+here we used a differnt list constructor  
+Listview.builder which takes a function and  make the widget of listitem from the data source 
+
+
+
+(counter) is a lambda expression which goes until thousand 
+
+
+the builder fn will just load the listitems that are visible only on the screen and called for one element only once
+
+
+
+
+
+
+
+FLOATING ACTION BUTTON  AND SNACKBAR :
+
+
+
+
+
+FAB : LIKE THE PLUS ICON IN THE MAILS AND WHEN A MAIL IS DELETEE WE GET A NOTIFICATION BAR THAT IS SNACKBAR 
+
+
+
+
+//import 'dart:js';
+
+import 'package:flutter/material.dart';
+//import './home.dart';
+
+void main() {
+  runApp(
+      MaterialApp(
+
+          title: " Ui widgets",
+          home: Scaffold(
+            appBar: AppBar(title:Text("lONG lIST  "),),
+            body:getListview() ,
+            floatingActionButton: FloatingActionButton(
+              child:Icon(Icons.add) ,
+              tooltip:'Add one more item',//what it will do
+              onPressed: () {
+                debugPrint("Running ")  ;
+              },
+
+            ),
+          )
+      )
+  )
+  ;
+}
+
+void showsnackbar (BuildContext context,String item) {
+  var snackbar = SnackBar(
+    content :Text("You just taped the $item ") ,
+    action : SnackBarAction(
+      label:'Undo' ,
+      onPressed: (){
+        debugPrint("undo") ;
+      },
+    )
+  ) ;
+
+
+  Scaffold.of(context).showSnackBar(snackbar) ;  //specialstatement it requires builcontext of scaffoldwidget so from
+  //wherrever it is called it will ge the context
+}
+
+
+List<String> getListElements() {
+
+  var items= List<String>.generate(1000,(counter) => "Item $counter") ;
+  return items ;
+
+
+}
+
+
+Widget getListview() {
+
+  var listItems = getListElements() ;
+
+
+  var listview = ListView.builder(itemBuilder:(context,index){
+    return ListTile(
+      leading: Icon(Icons.wb_sunny),
+      title:Text(listItems[index]) ,
+      onTap: () {
+       showsnackbar(context,listItems[index]) ; // this context is of itembuilder but list is beinfg called in scaffold so it will get scaffolod contxt
+      },
+    ) ;
+  }) ;
+
+
+  return listview ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

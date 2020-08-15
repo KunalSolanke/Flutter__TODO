@@ -1,0 +1,1359 @@
+SECTION 3 :
+
+INTERACTIVE APP ----------
+
+
+
+1.STATEFUL WIDGETS 
+2 DIFF IN STATEFUL AND STATELESS 
+3.EVENTS IN APP ,ONPRESS,CHECK ,DIALOG
+4.DROPDOWN BUTTON WITH DROP DOWN ITEMS IN PHASE 1 
+
+
+
+
+IN PHASE2 :
+MAKING SIMPLE INTEREST CALCULATOR APP,ADDING STYLES AND THEMES,
+EVEENT HANDLING 
+FROMS AND FROM TEXTFIELDS IT IS SAME AS THE WEB FORMS 
+ADDING VALIDATION LAYER THAT IF ALL REQUIRED FIELDS ARE CORRECT OR NOT 
+
+
+
+
+
+PHASE 2 : 
+
+
+1.STATEFULL WIDGET
+
+STATE:
+
+THE STATE OF WIDGET IS INFORMATION OF WIDGET WHEN IT IS FIRST CREATED AND IT CAN BE CHANGES ANYTIME IN LIFETIME OF THE WIDGET
+
+CLASSES THAT INHERTIT  : STATEFULWIDGET  ALSO WE HAVE A GENERIC CLASS STATE :
+CLASSES THAT INHERIT THE STATEFUL WIDGET ARE IMMUTABLE WHILE STATE CAN BE CHANGED 
+
+
+
+
+BASIC DIFF IN STATEFUL AND STATELESS :
+
+STATEFUL : USER MIGHT INTERACT WITH IT TO CHANGE IT LIKE CHECK BOX 
+
+HERE WE HAVE TO OVERIDE THE CREATE STATE METHOD WHICH RETURN THE DTATE OF WIDGET 
+
+IN CASE OF CHANGE WE HAVE TO CALL THE SETSTATE METHOD WHICH REDRAWS THE WIDGET IN NEW STATE
+
+
+
+STATELESS :  WHILE THIS IS DEFINE DONCE AND DONE THAT IS NO DIRECT USER INTERACTION THAT IS THE TEXT AND THE RAISED BUTTON
+
+WHILE HERE THE OVERIDE BUILD AND  RETURN THE WIDGET 
+
+
+
+
+IMPLEMENTATION OF THE STATEFUL WIDGET: 
+    1.CREATE A CLASS THAT INHERITS FROM THE STATEFUL WIDGET AND THIS CLASS RETURS THE STATE OF WIDGET FROM CREATESATAE MEHTOD
+    2.CREATE A SEPERATE STATE CLASS FOR THE WIDGET ALONG EITH MUTABLE PROPERTIES 
+    3.IN STATE CLASS IMPLEMENT BUILD METHOD WHICH RETURNS CURRENT STATE OF METHOD 
+    4.CALLING THE SETSTATE METHOD WHICH DESTROYS OLDER STATE 
+
+
+CODE :
+
+
+
+import 'package:flutter/material.dart';
+
+
+void main() {
+  runApp(
+    MaterialApp(
+      title:"Stateful App example" ,
+      home:FavouriteCity() ,
+    )
+
+  );
+}
+
+class FavouriteCity extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+
+    return _FavouriteCityState() ;
+  }
+
+
+}
+
+// making the statefulwidget now making the stste class for the widget
+//underscore is use as per guidelines so that the state is private for the respective class
+//which as a type parameter expects the stateful widget (favouritecity)
+
+class _FavouriteCityState extends State<FavouriteCity>{
+  String name ="" ;
+  @override
+  Widget build(BuildContext context) {
+    debugPrint("") ;
+
+    return Scaffold(
+      appBar: AppBar(
+        title:Text("Stateful App Example"),
+      ),
+      body:Container(
+        margin:EdgeInsets.all(20.0) ,
+        child: Column(
+          children: <Widget>[
+            TextField(
+              onSubmitted: (String userInput){
+
+                setState(() {
+                  debugPrint("") ;
+
+                  name=userInput ;
+                });
+
+              },
+
+            ),
+            Padding(padding:EdgeInsets.all(10.0),
+                child:Text("Your fav city is $name",
+                style:TextStyle(
+              
+              fontSize: 20.0,)
+            )
+            )
+          ],
+        )
+      )
+    );
+  }
+
+}
+
+
+//Textfield allows user to enter soem data
+
+
+
+
+
+The changes are done in the state of the widget and hence the favourite city is immutable while the state of the widget is mutable
+
+we can use event handlers like onchanged also :
+while onchanged is updated in runtime and hence its immediate
+
+
+
+
+
+
+
+DROPDOWNS :
+
+
+
+import 'package:flutter/material.dart';
+
+
+void main() {
+  runApp(
+    MaterialApp(
+      title:"Stateful App example" ,
+      home:FavouriteCity() ,
+    )
+
+  );
+}
+
+class FavouriteCity extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+
+    return _FavouriteCityState() ;
+  }
+
+
+}
+
+// making the statefulwidget now making the stste class for the widget
+//underscore is use as per guidelines so that the state is private for the respective class
+//which as a type parameter expects the stateful widget (favouritecity)
+
+class _FavouriteCityState extends State<FavouriteCity>{
+  String name ="" ;
+  var _currencies=['Rupees','Dollar','Pounds','Other'] ;
+  var _currentItemselected = 'Rupees' ;
+  @override
+  Widget build(BuildContext context) {
+    debugPrint("") ;
+
+    return Scaffold(
+      appBar: AppBar(
+        title:Text("Stateful App Example"),
+      ),
+      body:Container(
+        margin:EdgeInsets.all(20.0) ,
+        child: Column(
+          children: <Widget>[
+            TextField(
+              onSubmitted: (String userInput){
+
+                setState(() {
+                  debugPrint("") ;
+
+                  name=userInput ;
+                });
+
+              },
+
+            ),
+            DropdownButton<String>(
+              items:_currencies.map((String dropdownitem){
+                return DropdownMenuItem<String>(
+                  value :dropdownitem,
+                  child:Text(dropdownitem),
+                ) ;
+              }).toList() ,
+              onChanged: (String newValueSelected){
+                _dropdownselected(newValueSelected) ;
+
+              },
+              value:_currentItemselected ,
+
+    ),
+            Padding(padding:EdgeInsets.all(10.0),
+                child:Text("Your fav city is $name",
+                style:TextStyle(
+              
+              fontSize: 20.0,)
+            )
+            )
+          ],
+        )
+      )
+    );
+  }
+  void _dropdownselected(String newValueSelected){
+    setState(() {
+      this._currentItemselected=newValueSelected ;
+    }) ;
+
+  }
+
+}
+
+
+//Textfield allows user to enter soem data
+
+
+
+
+
+
+
+
+USER INTERFACE OF SIMPLE INTEREST CACLULATOR :
+
+
+
+FOR SMALL SCRREN TO AVOID THE OVEFLOW OF THE SCREEN JUST USE LISTVIVEW INPLACE OF COLUMN
+
+
+
+
+
+rt 'package:flutter/material.dart';
+
+
+void main() {
+  runApp(
+    MaterialApp(
+      title:"Stateful App example" ,
+      home:SIForm() ,
+    ) );
+}
+
+
+class SIForm extends  StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+
+    return _SifState();
+  }
+
+}
+
+class _SifState extends State<SIForm> {
+  var _currencies=['Rupees','Dollar','Pounds','Other'] ;
+  final _minpad=5.0 ;
+  var _current ='Rupess' ;
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      //resizeToAvoidBottomInset: false ,  //it is used to avoid the resixe that when we click on any textfield the keyboard pops up and the rem
+        //content overflows
+      //NO NEED OF THIS IN CASSE OF LISTVIEW
+      appBar: AppBar(
+        title: Text("Simple Interest Calculator")),
+        body:Container(
+          margin: EdgeInsets.all(_minpad*2),
+          child: ListView(
+            children: <Widget>[
+              getImage(),
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Principal',
+                  hintText: 'Enter Principal eg 12000' ,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                  )
+
+                ),
+              ))
+              ,
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: 'Rate Of Interest',
+                    hintText: 'In Percent' ,
+                    border:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                    )
+
+                ),
+              )
+              ),
+
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                  child:
+              Row(
+                children: <Widget>[
+                  Expanded(child :
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        labelText: 'Term',
+                        hintText: 'Numbeer of years ' ,
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                        )
+
+                    ),
+                  )),
+                  Container(
+                    width: (_minpad*5),
+                  ),
+
+                  Expanded(child:
+                  DropdownButton<String>(
+                    items : _currencies.map((String dropdownitems){
+                      return DropdownMenuItem<String>(
+                        value: dropdownitems ,
+                        child:Text(dropdownitems),
+                      )  ;
+                    }).toList(),
+
+                    onChanged: (String newcurrency){
+//                      setState(() {
+//                        this._current=newcurrency;
+//                      }) ;
+                    },
+                    value:'Rupees' ,
+
+                  )
+                  )
+                ],
+              )),
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        child:Text("Calculate"),
+                        onPressed: (){
+
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        child:Text("Reset"),
+                        onPressed: (){
+
+                        },
+                      ),
+                    )
+
+                  ],
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Text("Todo")
+
+
+
+               )
+
+
+
+
+            ],
+          ),
+        )
+      ) ;
+  }
+  
+  Widget getImage(){
+    AssetImage asset = AssetImage('images/bank.jpg') ;
+    Image image = Image(image:asset,height:125.0,width:125.0) ;
+    return Container(
+      child:image ,
+      margin:EdgeInsets.all(_minpad*10)
+    ) ;
+  }
+
+}
+ 
+
+
+
+
+APPLYING STYLES AND THEMES :
+
+
+
+WE CAN DO BY :
+
+1.APPLY THEME TO WHOLE APPLICATION 
+2.OR TO A SMALL PART 
+
+
+1.IF NO THEME IS APPLIED TO THE APP THEN THE FLUTTER APLIES A FALLBACK THEME TO THE APP .
+WE CAN USE THE THEMEDATA CLASS IN THE MATERIALPP WID .iT HAS NUMEROUS STYLES WE CAN USE ,
+
+accentcolor is applicable for scroll ,knobs and etc
+primary color for top title
+we can use predefined fonts in flutter
+
+
+
+TextStyle textStyle =Theme.of(context).textTheme.title ; //using theme of material app and uses style of the style
+    // .of will find the nearest Theme to it
+
+
+
+brightness: Brightness.dark,
+brigntness is by default light 
+
+
+
+
+
+
+import 'package:flutter/material.dart';
+
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title:"Stateful App example" ,
+      home:SIForm() ,
+      theme:ThemeData(
+        primaryColor: Colors.indigo ,
+        accentColor: Colors.indigoAccent,
+        brightness: Brightness.dark,
+      )
+    ) );
+}
+
+
+class SIForm extends  StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+
+    return _SifState();
+  }
+
+}
+
+class _SifState extends State<SIForm> {
+  var _currencies=['Rupees','Dollar','Pounds','Other'] ;
+  final _minpad=5.0 ;
+  var _current ='Rupess' ;
+  @override
+  Widget build(BuildContext context) {
+
+
+    TextStyle textStyle =Theme.of(context).textTheme.title ; //using theme of material app and uses style of the style
+    // .of will find the nearest Theme to it
+
+    return Scaffold(
+      //resizeToAvoidBottomInset: false ,  //it is used to avoid the resixe that when we click on any textfield the keyboard pops up and the rem
+        //content overflows
+      //NO NEED OF THIS IN CASSE OF LISTVIEW
+      appBar: AppBar(
+        title: Text("Simple Interest Calculator")),
+        body:Container(
+          margin: EdgeInsets.all(_minpad*2),
+          child: ListView(
+            children: <Widget>[
+              getImage(),
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                style: textStyle,
+                decoration: InputDecoration(
+                  labelText: 'Principal',
+                  labelStyle: textStyle,
+                  hintText: 'Enter Principal eg 12000' ,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                  )
+
+                ),
+              ))
+              ,
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                style: textStyle,
+                decoration: InputDecoration(
+                    labelText: 'Rate Of Interest',
+                    labelStyle: textStyle,
+                    hintText: 'In Percent' ,
+                    border:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                    )
+
+                ),
+              )
+              ),
+
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                  child:
+              Row(
+                children: <Widget>[
+                  Expanded(child :
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    style: textStyle,
+                    decoration: InputDecoration(
+                        labelText: 'Term',
+                        labelStyle: textStyle,
+                        hintText: 'Numbeer of years ' ,
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                        )
+
+                    ),
+                  )),
+                  Container(
+                    width: (_minpad*5),
+                  ),
+
+                  Expanded(child:
+                  DropdownButton<String>(
+                    items : _currencies.map((String dropdownitems){
+                      return DropdownMenuItem<String>(
+                        value: dropdownitems ,
+                        child:Text(dropdownitems),
+                      )  ;
+                    }).toList(),
+
+                    onChanged: (String newcurrency){
+//                      setState(() {
+//                        this._current=newcurrency;
+//                      }) ;
+                    },
+                    value:'Rupees' ,
+
+                  )
+                  )
+                ],
+              )),
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color:Theme.of(context).accentColor,
+                        textColor: Theme.of(context).primaryColorDark,
+                        child:Text("Calculate",textScaleFactor: 1.5,),
+                        onPressed: (){
+
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color:Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child:Text("Reset",
+                        textScaleFactor: 1.5,),
+                        onPressed: (){
+
+                        },
+                      ),
+                    )
+
+                  ],
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Text("Todo",style: textStyle,)
+
+
+
+               )
+
+
+
+
+            ],
+          ),
+        )
+      ) ;
+  }
+  
+  Widget getImage(){
+    AssetImage asset = AssetImage('images/bank.jpg') ;
+    Image image = Image(image:asset,height:125.0,width:125.0) ;
+    return Container(
+      child:image ,
+      margin:EdgeInsets.all(_minpad*10)
+    ) ;
+  }
+
+}
+
+
+
+
+
+
+NOW LETS ADD SOME LOGIC TO THE APP :
+
+
+
+
+1.add dropdown logic 
+2.in order to extract the value out of textfield we have a special notifier known as textcontroller . SO we HAVE TO MAKE CONTROLLER FOR ALL TH EFIELDS SO WHEN WE WILL INPUT THE CONTROLLER WILL TELL THE RECEIVER THAT WE HAVE A VALUE
+
+
+we have class TEXTEDITINGCONTROLLER for it :
+
+ TextEditingController principal =TextEditingController() ;
+
+
+now Taking THE VALUES FROM THE CONTROLLLER :
+extract:
+controller.text ; this is a string so we have to parse is according to our datatype ;
+
+   double principalv= double.parse(principal.text) ;
+   double roiv= double.parse(roi.text) ;
+   double ternv= double.parse(term.text) ;
+
+
+//when the data type is var we have to use this.varname to refer it elsewhere in the class 
+
+
+void _reset(){
+    principal.text='' ;
+    roi.text="" ;
+    term.text ="" ;
+    this.displayResult="";
+    _current=_currencies[0] ;
+  }
+
+
+TO NOTE :
+
+
+
+var _currencies=['Rupees','Dollar','Pounds','Other'] ;
+  final _minpad=5.0 ;
+  var _current =_currencies[0] ;      this intialization is not alllowed as only static member can be initialized 
+
+
+
+then WE CAN USE INIT STATE FN :
+
+
+
+
+
+
+
+
+
+
+ @override
+  void initState() {
+    super.initState() ;
+    _current = _currencies[0];
+  
+
+
+
+
+
+
+
+
+
+
+import 'package:flutter/material.dart';
+
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title:"Stateful App example" ,
+      home:SIForm() ,
+      theme:ThemeData(
+        primaryColor: Colors.indigo ,
+        accentColor: Colors.indigoAccent,
+        brightness: Brightness.dark,
+      )
+    ) );
+}
+
+
+class SIForm extends  StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+
+    return _SifState();
+  }
+
+}
+
+class _SifState extends State<SIForm> {
+  var _currencies=['Rupees','Dollar','Pounds','Other'] ;
+  final _minpad=5.0 ;
+  var _current ='' ;
+
+  @override
+  void initState() {
+    super.initState() ;
+    _current = _currencies[0];
+  }
+
+  TextEditingController principal =TextEditingController() ;
+  TextEditingController roi =TextEditingController() ;
+  TextEditingController term=TextEditingController() ;
+
+  var displayResult="" ;
+  @override
+  Widget build(BuildContext context) {
+
+
+    TextStyle textStyle =Theme.of(context).textTheme.title ; //using theme of material app and uses style of the style
+    // .of will find the nearest Theme to it
+
+    return Scaffold(
+      //resizeToAvoidBottomInset: false ,  //it is used to avoid the resixe that when we click on any textfield the keyboard pops up and the rem
+        //content overflows
+      //NO NEED OF THIS IN CASSE OF LISTVIEW
+      appBar: AppBar(
+        title: Text("Simple Interest Calculator")),
+        body:Container(
+          margin: EdgeInsets.all(_minpad*2),
+          child: ListView(
+            children: <Widget>[
+              getImage(),
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                controller: principal,
+                style: textStyle,
+                decoration: InputDecoration(
+                  labelText: 'Principal',
+                  labelStyle: textStyle,
+                  hintText: 'Enter Principal eg 12000' ,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                  )
+
+                ),
+              ))
+              ,
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+              child:TextField(
+                keyboardType: TextInputType.number,
+                controller: roi,
+                style: textStyle,
+                decoration: InputDecoration(
+                    labelText: 'Rate Of Interest',
+
+                    labelStyle: textStyle,
+                    hintText: 'In Percent' ,
+                    border:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                    )
+
+                ),
+              )
+              ),
+
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                  child:
+              Row(
+                children: <Widget>[
+                  Expanded(child :
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    style: textStyle,
+                    controller: term,
+                    decoration: InputDecoration(
+                        labelText: 'Term',
+                        labelStyle: textStyle,
+                        hintText: 'Numbeer of years ' ,
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0)  //border radius with stroke of 5
+                        )
+
+                    ),
+                  )),
+                  Container(
+                    width: (_minpad*5),
+                  ),
+
+                  Expanded(child:
+                  DropdownButton<String>(
+                    items : _currencies.map((String dropdownitems){
+                      return DropdownMenuItem<String>(
+                        value: dropdownitems ,
+                        child:Text(dropdownitems),
+                      )  ;
+                    }).toList(),
+
+                    onChanged: (String newValueSelected){
+                      _ondropselect(newValueSelected) ;
+//                      setState(() {
+//                        this._current=newcurrency;
+//                      }) ;
+                    },
+                    value: _current ,
+
+                  )
+                  )
+                ],
+              )),
+
+              Padding(
+                  padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color:Theme.of(context).accentColor,
+                        textColor: Theme.of(context).primaryColorDark,
+                        child:Text("Calculate",textScaleFactor: 1.5,),
+                        onPressed: (){
+                          setState(() {
+                           this.displayResult= _calculatetotal() ;
+                          });
+
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color:Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).primaryColorLight,
+                        child:Text("Reset",
+                        textScaleFactor: 1.5,),
+                        onPressed: (){
+                          setState(() {
+                            _reset() ;
+                          });
+
+                        },
+                      ),
+                    )
+
+                  ],
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top:_minpad,bottom:_minpad),
+                child:Text(this.displayResult,style: textStyle,)
+
+
+
+               )
+
+
+
+
+            ],
+          ),
+        )
+      ) ;
+  }
+  
+  Widget getImage(){
+    AssetImage asset = AssetImage('images/bank.jpg') ;
+    Image image = Image(image:asset,height:125.0,width:125.0) ;
+    return Container(
+      child:image ,
+      margin:EdgeInsets.all(_minpad*10)
+    ) ;
+  }
+
+  void _ondropselect(String newValueSelected){
+                         setState(() {
+                      this._current=newValueSelected;
+                    }) ;
+
+  }
+
+  String _calculatetotal(){
+    double principalv= double.parse(principal.text) ;
+    double roiv= double.parse(roi.text) ;
+    double ternv= double.parse(term.text) ;
+
+    double amt= principalv*roiv*ternv /100 + principalv;
+    String result ="After $ternv years ,your investment will be worth $amt $_current" ;
+
+    return result ;
+  }
+
+  void _reset(){
+    principal.text='' ;
+    roi.text="" ;
+    term.text ="" ;
+    this.displayResult="";
+    _current=_currencies[0] ;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+IMPORTANT ;
+NOW WE WILL ADD THE VALIDATION TO THE INPUT FIELDS :
+THE OPERATION STILL RUNS IF WE DONT INPUT ANY THING ,
+SO WE USE FORM WIDGET AND A VALIDATION IN CASE OF WRONG VALUE AND BLANK TEXT ,
+
+
+
+
+
+
+
+FROM VALIDATION :
+
+
+
+we wiILL LEARN ABOUT :
+
+1.FORM 
+2.TEXTFORMFIELD 
+3.SHOWING FORM ERRORS 
+
+
+
+FORM :
+CREATE A FORM WITH A GLOBAL KEY :
+
+    COVERT CONTAINER TO FORM(ITSELF A CONTAINER)
+
+    var _formkey = GlobalKey<FormState>()   ;
+THIS ACTS AS A KEY FOR OUR FORM widget 
+THIS KEY WILL BE USED TO IDENTIFY OUR FORM INSTANCE ,WITH THIS KEY WE WILL GET STATE OF THE FORM 
+
+
+
+Form(
+          key: _formkey,
+
+
+
+
+2.ADD TEXTFORMFIELD WITH VALIDATION LOGIC :
+
+   IN PLACE OF TEXTFIELD USE TEXTFORMFIELD -THIS ENABLES US TO APPLY VALIDATION LAYER OVER THE TEXTFIELD
+
+
+
+child: TextFormField(
+                        validator : (String value){
+                          if (value.isEmpty){
+                            return "Please input correct value" ;
+                          }
+                        }
+
+
+
+//validaror is a funcion which takes input as parameter from the form and return something
+
+
+
+3.USE THE BUTTON TO VALIDATE AND SUBMIT THE FORM 
+
+
+
+onPressed: () {
+                                
+                                setState(() {
+                                  if (_formkey.currentState.validate()) {
+                                    this.displayResult = _calculatetotal();
+                                  }
+                                });
+
+
+
+
+
+
+
+ERROR MESSAGE IS BY DEFAULT RED WE CAN CHANGE IT ;
+
+
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Stateful App example",
+      home: SIForm(),
+      theme: ThemeData(
+        primaryColor: Colors.indigo,
+        accentColor: Colors.indigoAccent,
+        brightness: Brightness.dark,
+      )));
+}
+
+class SIForm extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _SifState();
+  }
+}
+
+class _SifState extends State<SIForm> {
+  var _formkey = GlobalKey<FormState>()   ;
+  var _currencies = ['Rupees', 'Dollar', 'Pounds', 'Other'];
+
+  final _minpad = 5.0;
+
+  var _current = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _current = _currencies[0];
+  }
+
+  TextEditingController principal = TextEditingController();
+
+  TextEditingController roi = TextEditingController();
+
+  TextEditingController term = TextEditingController();
+
+  var displayResult = "";
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context)
+        .textTheme
+        .title; //using theme of material app and uses style of the style
+    // .of will find the nearest Theme to it
+
+    return Scaffold(
+        //resizeToAvoidBottomInset: false ,  //it is used to avoid the resixe that when we click on any textfield the keyboard pops up and the rem
+        //content overflows
+        //NO NEED OF THIS IN CASSE OF LISTVIEW
+        appBar: AppBar(title: Text("Simple Interest Calculator")),
+        body: Form(
+          key: _formkey,
+          //margin: EdgeInsets.all(_minpad * 2),
+          child: Padding(
+              padding: EdgeInsets.all(_minpad * 2),
+              child: ListView(
+                children: <Widget>[
+                  getImage(),
+                  Padding(
+                      padding: EdgeInsets.only(top: _minpad, bottom: _minpad),
+                      child: TextFormField(
+
+                        keyboardType: TextInputType.number,
+                        controller: principal,
+                        // ignore: missing_return
+                        validator : (String value){
+                          if (value.isEmpty){
+                            return "Please input correct value" ;
+                          }
+                        },
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelText: 'Principal',
+                            errorStyle: TextStyle(
+                              color: Colors.yellowAccent ,
+                              fontSize: 15.0 ,
+                            ),
+
+                            labelStyle: textStyle,
+                            hintText: 'Enter Principal eg 12000',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    5.0) //border radius with stroke of 5
+                                )),
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(top: _minpad, bottom: _minpad),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: roi,
+                        // ignore: missing_return
+                        validator : (String value){
+                          if (value.isEmpty){
+                            return "Please input correct value" ;
+                          }
+                        },
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelText: 'Rate Of Interest',
+                            labelStyle: textStyle,
+                            errorStyle: TextStyle(
+                              color: Colors.yellowAccent ,
+                              fontSize: 15.0 ,
+                            ),
+                            hintText: 'In Percent',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    5.0) //border radius with stroke of 5
+                                )),
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(top: _minpad, bottom: _minpad),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            style: textStyle,
+                            controller: term,
+                                // ignore: missing_return
+                                validator : (String value){
+                                  if (value.isEmpty){
+                                    return "Please input correct value" ;
+                                  }
+                                },
+                            decoration: InputDecoration(
+                                labelText: 'Term',
+                                errorStyle: TextStyle(
+                                  color: Colors.yellowAccent ,
+                                  fontSize: 15.0 ,
+                                ),
+                                labelStyle: textStyle,
+                                hintText: 'Numbeer of years ',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        5.0) //border radius with stroke of 5
+                                    )),
+                          )),
+                          Container(
+                            width: (_minpad * 5),
+                          ),
+                          Expanded(
+                              child: DropdownButton<String>(
+                            items: _currencies.map((String dropdownitems) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownitems,
+                                child: Text(dropdownitems),
+                              );
+                            }).toList(),
+                            onChanged: (String newValueSelected) {
+                              _ondropselect(newValueSelected);
+//                      setState(() {
+//                        this._current=newcurrency;
+//                      }) ;
+                            },
+                            value: _current,
+                          ))
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(top: _minpad, bottom: _minpad),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: RaisedButton(
+                              color: Theme.of(context).accentColor,
+                              textColor: Theme.of(context).primaryColorDark,
+                              child: Text(
+                                "Calculate",
+                                textScaleFactor: 1.5,
+                              ),
+                              onPressed: () {
+
+                                setState(() {
+                                  if (_formkey.currentState.validate()) {
+                                    this.displayResult = _calculatetotal();
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: RaisedButton(
+                              color: Theme.of(context).primaryColorDark,
+                              textColor: Theme.of(context).primaryColorLight,
+                              child: Text(
+                                "Reset",
+                                textScaleFactor: 1.5,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _reset();
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(top: _minpad, bottom: _minpad),
+                      child: Text(
+                        this.displayResult,
+                        style: textStyle,
+                      ))
+                ],
+              )),
+        ));
+  }
+
+  Widget getImage() {
+    AssetImage asset = AssetImage('images/bank.jpg');
+    Image image = Image(image: asset, height: 125.0, width: 125.0);
+    return Container(child: image, margin: EdgeInsets.all(_minpad * 10));
+  }
+
+  void _ondropselect(String newValueSelected) {
+    setState(() {
+      this._current = newValueSelected;
+    });
+  }
+
+  String _calculatetotal() {
+    double principalv = double.parse(principal.text);
+    double roiv = double.parse(roi.text);
+    double ternv = double.parse(term.text);
+
+    double amt = principalv * roiv * ternv / 100 + principalv;
+    String result =
+        "After $ternv years ,your investment will be worth $amt $_current";
+
+    return result;
+  }
+
+  void _reset() {
+    principal.text = '';
+    roi.text = "";
+    term.text = "";
+    this.displayResult = "";
+    _current = _currencies[0];
+  }
+}
+
+
+
+
+
+WE CAN ADD MORE VALIDATION
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

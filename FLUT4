@@ -1,0 +1,1124 @@
+SECTION 4:
+
+
+
+WE WILL CREATE A DATABASE APP IN FLUTTER :
+
+NOTEKEEPER APP IN SQLITE :
+1.TWO SCREENS :
+   1.LIST OF NOTES(NOTELIST.DART --EACH NOTE WILL HAVE A PRIORITY FUNCTIONS:EDITING DELETING NOTE )
+   2.EDIT SCREEN
+
+
+WE WILL DO ADDING NEW NOTES IN SQLITE WITH HELP OF SQFLITE PLUGIN IN FLUTTER PACAKAGES ,AS WE ARE USING THE DATABASES NEXT LOAD WILL SHOW THE PREV DATABASES:
+
+
+
+PHASE 1:
+UI OF APP  AND FOUNDATIONAL CONCEPTS 
+
+  1.NAVIGATING BETWEEN SCREENS IN FLUTTER 
+  2.ASSYNC PROG IN FLUTTER BY USING FUTURE OBJECTS
+     -ASSYNC
+     -AWAIT 
+     -THEN 
+
+
+PHASE 2 :
+  1 USING SQLITE DATABASE USING SQFLIDE PLUGIN
+
+  2.SINGLETON
+  3.PLUGINS 
+    -SQFLITE 
+    -PATHPROVIDER
+    -INTL
+
+
+
+
+
+
+
+
+PHASE 1 :
+
+
+APP UI :
+
+in FLUTTER WE CAN GET A CIRCULAR SHAPED WIDGET BY ADDING 
+
+for circular a]icon we can use CircleAvtar widget and in it we can add Icon widget :
+
+
+leading: CircleAvatar(
+                  backgroundColor: Colors.yellow,
+                  child: Icon(Icons.keyboard_arrow_right),
+                ),
+
+
+
+
+main .dart 
+
+
+
+import 'package:flutter/material.dart';
+import './screens/note_detail.dart';
+
+void main() {
+  runApp(myApp());
+}
+
+class myApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+        ),
+        title: "Notekeeper",
+        home: Notedetail());
+  }
+}
+
+
+notedetail.dart
+
+
+
+
+import 'package:flutter/material.dart';
+
+class Notedetail extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _notedetailState();
+  }
+}
+
+class _notedetailState extends State<Notedetail> {
+  static var _priorities = ['High', 'Low'];
+
+  TextEditingController titlecont = TextEditingController();
+
+  TextEditingController desccont = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context).textTheme.subhead;
+
+    return MaterialApp(
+        home: Scaffold(
+            appBar: AppBar(title: Text("Edit Note ")),
+            body: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: ListView(
+                  children: <Widget>[
+                    ListTile(
+                        title: DropdownButton(
+                            items: _priorities.map((String dropitems) {
+                              return DropdownMenuItem<String>(
+                                  value: dropitems, child: Text(dropitems));
+                            }).toList(),
+                            style: textStyle,
+                            onChanged: (valByuser) {
+                              setState(() {
+                                debugPrint("Val by user is $valByuser");
+                              });
+                            },
+                            value: 'Low')),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: titlecont,
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelStyle: textStyle,
+                            labelText: "Title",
+                            hintStyle: textStyle,
+                            hintText: "note name here",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: desccont,
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelStyle: textStyle,
+                            labelText: "Description",
+                            hintStyle: textStyle,
+                            hintText: "note here",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: RaisedButton(
+                                child: Text(
+                                  "Save",
+                                  textScaleFactor: 1.5,
+                                ),
+                                elevation: 6.0,
+                                color: Theme.of(context).primaryColorDark,
+                                textColor: Theme.of(context).primaryColorLight,
+                                onPressed: () {
+                                  debugPrint("Save clicked");
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: 5.0,
+                            ),
+                            Expanded(
+                              child: RaisedButton(
+                                child: Text(
+                                  "Delete",
+                                  textScaleFactor: 1.5,
+                                ),
+                                elevation: 6.0,
+                                color: Theme.of(context).primaryColorDark,
+                                textColor: Theme.of(context).primaryColorLight,
+                                onPressed: () {
+                                  debugPrint("Delete clicked");
+                                },
+                              ),
+                            )
+                          ],
+                        ))
+                  ],
+                ))));
+  }
+}
+
+
+
+
+
+note_list.dart ,
+
+
+
+
+
+import 'package:flutter/material.dart';
+
+class Notelist extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _notelistState();
+  }
+}
+
+class _notelistState extends State<Notelist> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Notes"),
+      ),
+      body: getnotelist(),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            debugPrint("Fab clicked ");
+          },
+          tooltip: "Add Note",
+          child: Icon(Icons.add)),
+    );
+  }
+
+  Widget getnotelist() {
+    TextStyle textStyle = Theme.of(context).textTheme.subhead;
+
+    return ListView.builder(
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
+          return Card(
+              color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.yellow,
+                  child: Icon(Icons.keyboard_arrow_right),
+                ),
+                title: Text("dummy title ", style: textStyle),
+                subtitle: Text("dummy title "),
+                trailing: Icon(Icons.delete, color: Colors.grey),
+                onTap: () {
+                  debugPrint("Hi");
+                },
+              ));
+        });
+  }
+}
+
+
+
+
+
+
+
+WE WILL NOW SEE NAVIGTING TO DIFFERENT SCREENS :
+
+
+!.HOW SCREENS ARE STACKED :
+  IN FLUTTER ONE SCREEN IS KNOWN AS ONE ROUTE 
+  STACK OF ROUTE IS MADE (LAST IN FIRST OUT)
+  WHEN NEW PAGE IS LOADED WE PEFORM PUSH OPERATION TO THE STACK OF ROUTES 
+  AND TO GO BACK WE JUST DO POP
+
+
+
+SCREENS IS MANAGED BY WIDGET NAVIGATOR -WE CAN PERFORM PUSH AND POP OPERATION 
+
+
+Navigator.push(context,MaterialPageRoute(builder :(context){
+              // ignore: missing_return
+             return Notedetail() ;
+
+            })) ;
+
+
+
+
+
+String appBartitle ;
+  Notedetail(this.appBartitle) 
+
+
+
+this is a constructor in dart language ;
+
+
+
+MOVING BACK LOGIC :
+WILLPOPSCOPE :
+wrap it in the scaffold on we have on willpop handler -- we write logic init to what to do when user presses the back func . 
+
+
+
+ void moveToLastscreen() {
+    Navigator.pop(context);
+  }
+
+
+
+
+
+PERFORMING ASSYNCHRONUS PROGRAMMING IN FLUTTER :
+
+
+
+BY USING :
+1.FUTURE API 
+2.ASSYNC API
+3.AWAIT API
+4.THEN
+
+
+
+WHEN AN ANDROID APP S LAUNCHED THEN A DEFFAULT PROCESS IS INTIALIZE AND THEN A MAIN UI THREAD IS CREATED AND ALL WORK GOES ON MAIN UI THREAD :
+
+IN ORDER TO HEAVY OPERATIONS A PARALLEL WORKED IN BACKG IS CREATED FOR LONG OP LIKE DOWNLOAD AND UPLOAD : ANDROIF IS MULTITHREADED
+
+
+BUT DART IN SINGLE THREADED :
+ SO WE CAN.T DO LIKE A ANDROID APP SO ALL THIS IS DONE IN MAIN THREAD WHICH COULD HAVE CAUSED THE HANG BUT IN FLUTTER WE DO IT ASSYNCHRONOUSLY WITHOUT BLOCKING THE MAIN UI THREAD
+
+
+
+FUTURE IS SAME AS PROMISE TOKEN IN JS 
+
+ASSYNC AND AWAIT ARE MORE OR LESS REPLACEMENT FOR THE THEN API :
+
+
+
+
+NOTE-DETAL DART
+
+
+
+
+import 'package:flutter/material.dart';
+
+class Notedetail extends StatefulWidget {
+  String appBartitle;
+
+  Notedetail(this.appBartitle); //constructor
+  @override
+  State<StatefulWidget> createState() {
+    return _notedetailState(this.appBartitle);
+  }
+}
+
+class _notedetailState extends State<Notedetail> {
+  static var _priorities = ['High', 'Low'];
+
+  TextEditingController titlecont = TextEditingController();
+
+  TextEditingController desccont = TextEditingController();
+
+  String appBartitle;
+
+  _notedetailState(this.appBartitle); //constructor
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle textStyle = Theme
+        .of(context)
+        .textTheme
+        .subhead;
+
+    return WillPopScope(
+        onWillPop: () {
+          moveToLastscreen();
+        },
+
+        child: Scaffold(
+            appBar: AppBar(title: Text(appBartitle),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  moveToLastscreen();
+                },
+              ),
+            ),
+            body: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: ListView(
+                  children: <Widget>[
+                    ListTile(
+                        title: DropdownButton(
+                            items: _priorities.map((String dropitems) {
+                              return DropdownMenuItem<String>(
+                                  value: dropitems, child: Text(dropitems));
+                            }).toList(),
+                            style: textStyle,
+                            onChanged: (valByuser) {
+                              setState(() {
+                                debugPrint("Val by user is $valByuser");
+                              });
+                            },
+                            value: 'Low')),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: titlecont,
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelStyle: textStyle,
+                            labelText: "Title",
+                            hintStyle: textStyle,
+                            hintText: "note name here",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: desccont,
+                        style: textStyle,
+                        decoration: InputDecoration(
+                            labelStyle: textStyle,
+                            labelText: "Description",
+                            hintStyle: textStyle,
+                            hintText: "note here",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: RaisedButton(
+                                child: Text(
+                                  "Save",
+                                  textScaleFactor: 1.5,
+                                ),
+                                elevation: 6.0,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark,
+                                textColor: Theme
+                                    .of(context)
+                                    .primaryColorLight,
+                                onPressed: () {
+                                  debugPrint("Save clicked");
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: 5.0,
+                            ),
+                            Expanded(
+                              child: RaisedButton(
+                                child: Text(
+                                  "Delete",
+                                  textScaleFactor: 1.5,
+                                ),
+                                elevation: 6.0,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark,
+                                textColor: Theme
+                                    .of(context)
+                                    .primaryColorLight,
+                                onPressed: () {
+                                  debugPrint("Delete clicked");
+                                },
+                              ),
+                            )
+                          ],
+                        ))
+                  ],
+                )))
+    );
+
+  }
+  void moveToLastscreen() {
+    Navigator.pop(context);
+  }
+}
+
+
+
+
+NOTE LIST 
+
+
+
+
+
+import 'package:flutter/material.dart';
+import 'package:flutterap/screens/note_detail.dart';
+
+class Notelist extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _notelistState();
+  }
+}
+
+class _notelistState extends State<Notelist> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Notes"),
+      ),
+      body: getnotelist(),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            debugPrint("Fab clicked ");
+            // ignore: missing_return
+            navtoDetail("Add Note");
+          },
+          tooltip: "Add Note",
+          child: Icon(Icons.add)),
+    );
+  }
+
+  Widget getnotelist() {
+    TextStyle textStyle = Theme.of(context).textTheme.subhead;
+
+    return ListView.builder(
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
+          return Card(
+              color: Colors.white,
+              elevation: 2.0,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.yellow,
+                  child: Icon(Icons.keyboard_arrow_right),
+                ),
+                title: Text("dummy title ", style: textStyle),
+                subtitle: Text("dummy title "),
+                trailing: Icon(Icons.delete, color: Colors.grey),
+                onTap: () {
+                  debugPrint("Hi");
+                  navtoDetail("Edit Note");
+                },
+              ));
+        });
+  }
+
+  void navtoDetail( String title) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      // ignore: missing_return
+      return Notedetail(title);
+    }));
+  }
+}
+
+
+
+MAIN DART ;
+
+
+
+
+import 'package:flutter/material.dart';
+import './screens/notelist.dart';
+
+void main() {
+  runApp(myApp());
+}
+
+class myApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+        ),
+        title: "Notekeeper",
+        home: Notelist());
+  }
+}
+
+
+
+
+
+PHASE 2 : 
+
+
+
+
+
+LETS LEARN ABOUT THE DATABASE SQLITE :
+
+WE ARE GOINTO USE SQFLITE PLUGIN 
+
+SQLITE IS IS AN IN PROCESS LIB THAT IMPLEMENTS IN PROCESS SELF CONTAINED ,SERVERLESS,ZEROCONFIGARATION,TRANSCATIONAL 
+
+ONE TRANSSACTION SAVAING DATA TO DATABASE OR FROM TAKING THEDATABASE 
+
+
+
+PLUGIN ALLOWS TO ACCESS SQLITE DATABASE FOR ANDROID AND DATABASE ,FOR THAT WE HAVE TO UPDATE PUBSPEC.YAML 
+
+NOTE :THIS PLUGIN ONLY DEALS WITH MAP OBJECTS
+
+
+
+WE NEED MODEL CLASS ,DATABASE HELPER CLASS HELP TO PERFOM CRUD OPERATION AND THEN WE HAVE TO CONNECT IT TO UI USING PLUGIN 
+
+
+
+
+
+
+
+
+MODEL CLASS IN THE DATABASES----
+
+
+
+
+DEPENDENCIES :
+SQFLITE PLUGIN 
+2.PATH PROVIDER -COMMONLU USED LOCATION IN FILE SYS IN BOTH ANADROID AND IOS 
+3.INTL :F
+    INTERNALIZATION PACKAGE -HELPS TO DEAL WITH DATE CONVERSION OR PARISING THE DATATYPES
+
+
+
+
+dependencies :
+
+
+pubspec.yaml
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: any
+  path_provider: any
+  intl: ^0.16.1
+
+MODEL CLASS : 
+IN LIB FOLDER NAMED MODELS package AND CREATE A NEW DART FILE IN IT NOTE.DART WITH CLASS NOTE
+
+
+
+
+
+
+
+
+
+
+
+NOW WE HAVE TO DEFINE A FN WHICH WILL HELPS US TO CONERT THE CLASS OBJECTS INTO MAP OBJECT 
+
+
+
+FOR EXTRACTING DATA :
+
+
+
+Note.fromMapObject(Map<String,dynamic> map) {
+  this._id = map['id'] ;
+  this._priority= map['priority'] ;
+  this._desc= map['desc'] ;
+  this._date=map['date'] ;
+  this._title=map['title'] ;
+  
+}
+
+
+
+
+
+MAKING MAP OBJ :
+
+
+
+Map<String ,dynamic> toMap(){
+  var map =Map<String,dynamic>() ; //instancre of empy map obj
+
+
+  //for id we have to first check if id is null or not depending on what the func is getting used
+  //for either updating or inserting
+
+  if(id!=null){
+    map['id']=_id ;
+  }
+
+
+   map['title'] =_title ;
+   map['desc'] =_desc ;
+   map['priority'] =_priority ;
+   map['date'] =_date ;
+
+   return map ;
+
+ }
+
+
+
+
+
+
+MODEL CLASS :
+
+
+
+
+class Note {
+  int _id ;
+  String _title ;
+  String _date ;
+  String _desc ;
+  int _priority ;
+
+  //constructor
+
+
+
+ Note(this._title,this._date,this._priority,[this._desc]) ;
+
+
+
+
+
+
+ //this._desc is made optiional
+//one more constructor that will also accept id as a parameter
+  Note.withId(this._id,this._title,this._date,this._priority,[this._desc]) ;
+  //this is a named constructor
+//we cannot have to unnamed constructor in same class
+
+
+
+  //now getters
+
+
+   int get id => _id ;
+   String get title => _title;
+   String get desc => _desc ;
+   int get priority => _priority ;
+   String get date => _date ;
+
+
+   //now setter
+
+//id do not need setters as id in datab will be generated automatically
+
+set title(String newTitle) {
+  //validation layer
+  if (newTitle.length <= 255 ){
+    this._title =newTitle ;
+  }
+}
+  set desc(String newdesc) {
+    //validation layer
+    if (newdesc.length <= 500 ){
+      this._desc =newdesc ;
+    }
+  }
+  set date(String newdate) {
+    //validation layer
+
+      this._date =newdate ;
+
+  }
+  set priority(int newPriority) {
+    //validation layer
+    if (newPriority >= 1 && newPriority<=2 ){
+      this._priority =newPriority ;
+    }
+  }
+
+
+  //FN FOR CONVERTING NOTE OBJ INTO MAP OBJ
+
+//map<key,value> the key of the dict is string in all the case while value is int and string so dynamic
+ Map<String ,dynamic> toMap(){
+  var map =Map<String,dynamic>() ; //instancre of empy map obj
+
+
+  //for id we have to first check if id is null or not depending on what the func is getting used
+  //for either updating or inserting
+
+  if(id!=null){
+    map['id']=_id ;
+  }
+
+
+   map['title'] =_title ;
+   map['desc'] =_desc ;
+   map['priority'] =_priority ;
+   map['date'] =_date ;
+
+   return map ;
+
+ }
+
+
+ //fn which will help to extract note obj from map obj
+//reverse of above
+
+//lets add named construct that will take map as a parameter
+
+Note.fromMapObject(Map<String,dynamic> map) {
+  this._id = map['id'] ;
+  this._priority= map['priority'] ;
+  this._desc= map['desc'] ;
+  this._date=map['date'] ;
+  this._title=map['title'] ;
+
+}
+
+
+
+}
+
+
+//underscore to make the variables private to the our own lib
+
+
+
+
+
+
+DATABASE HELPER CLASS :
+
+
+UNDER LIB MAKE A UTILS PACKAGE AND IN IT A DART FOR DATABASE_HELPER CLASS AND IMPORT ASSYNC AND SOFLITE IN IT
+
+
+
+
+
+CREATE A SINGLETON OBJ FOR DATABSE AS WELL DATAB HELPER CLASS ;
+
+
+
+
+
+
+
+FN TO INSERT ,FETECH UPDATE AND DELETE OPERATIONS:
+
+
+
+
+CHAINING OPERATIONS :
+
+
+
+import 'package:sqflite/sqflite.dart' ;
+import 'dart:async' ;
+import 'dart:io' ;
+//for dealing with files and folders   
+import 'package:path_provider/path_provider.dart' ;
+import 'package:flutterap/models/notes.dart' ;
+
+
+
+class Databasehelper {
+  //lets declare singleton obj of this class 
+  //this database helper instance needs to be in form of singleton
+  //singleton-this will have only one instance throigh out the app
+  
+  static Databasehelper _databasehelper ; //Singleton Databasehelper
+  //define singleton databse object 
+  
+  static Database _database ;
+  
+  
+  //define all the colums of database allong with the table name 
+  
+  
+  String noteTable='note_Table' ;
+  String colId ='Id' ;
+  String colTitle ='title' ;
+  String coldesc = 'desc' ;
+  String colpriority ='priority' ;
+  String colDate ='date' ;
+
+
+  Databasehelper._createInstance() ;
+
+
+//lets define factory constructor
+  //the factory keyword will allow us to return something 
+
+factory Databasehelper() {
+  
+  if(_databasehelper == null) {
+    //calling a namedconstructor
+    _databasehelper = Databasehelper._createInstance();
+}//null checker to make only oneinstance
+  
+  
+  //here we will return the value 0f the singleton instance 
+  return _databasehelper ;
+  
+}
+//getter for the database 
+Future<Database> get database async {
+  if(_database == null) {
+    _database = await intializeDatabase() ;
+    
+  }
+  return _database ;
+}
+
+
+
+
+
+//INITIALIZE OUR DATABASE FN 
+  
+  Future<Database>  intializeDatabase() async {
+  //here we will first get the path for both android and ios where we can store
+    //database 
+    
+    Directory directory =await getApplicationDocumentsDirectory() ; //pathproviderpackage
+    //this fn return future obj so we have to use await
+    
+    //define path to our databse 
+    String path = directory.path +'notes.db' ; //naming it as notes.db
+    
+    //finally creating database at given path 
+    
+    
+    //open/create the database at give path
+    
+    
+    var notesDatabase = await openDatabase(path,version: 1,onCreate: _createDb) ;
+    
+    return notesDatabase ;
+  }
+
+
+
+
+
+
+
+
+
+
+//create a fn which will help us execcute a statement to create our database 
+  //sql statement 
+  
+void _createDb(Database db ,int newVersion) async {
+  await db.execute('CREATE TABLE $noteTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,'
+      '$coldesc TEXT ,$colpriority INTEGER ,$colDate TEXT)'
+      ) ;
+}
+  
+  
+}
+
+
+
+
+
+
+
+
+NOW LETS SEE CRUD OPERATIOS : 
+
+
+
+
+//fetch operation : Get all note objects from database 
+  
+  //we get list of map in return from db
+
+Future<List<Map<String,dynamic>>>getNotemaplist () async {
+  Database db = await this.database ;//referencing to database 
+  
+  //performing query 
+  
+  var result =db.rawQuery('SELECT *FROM $noteTable order by $colpriority ASC') ;
+  //var result =await db.query(noteTable,orderBy:'$colpriority ASC') alternative this is a helper fn
+  
+  return result ;
+}
+
+
+//Insert operation :Inserting to database 
+
+
+Future<int> insertNote(Note note) async {
+  Database db = await this.database ;
+  var result = await db.insert(noteTable, note.toMap()) ;
+  return result ;
+  
+}
+
+
+//Update operation :updating to database 
+
+
+  Future<int> updateNote(Note note) async {
+    Database db = await this.database;
+    var result = await db.update(
+        noteTable, note.toMap(), where: '$colId=?',whereArgs: [note.id]);
+    return result;
+  }
+
+
+
+  //delete operation :delete to database
+
+
+  Future<int> deleteNote(int id) async {
+    Database db = await this.database;
+    var result = await db.rawDelete('DELETE FROM $noteTable WHERE $colId=$id');
+    return result;
+  }
+  
+  
+  //GEt total number of Note objects in database 
+  
+  
+  Future<int> getCount(Note note) async {
+    Database db = await this.database;
+    List<Map<String,dynamic>> x= await db.rawQuery('SELECT COUNT (*) FROM $noteTable') ;
+    int result = Sqflite.firstIntValue(x) ;
+    return result ;
+  }
+
+
+
+
+MAKING CALL TO CRUD FUNCTIONS :
+
+
+
+LETS CALL FNS FROM OUR DATABASE_HELPER CLASS
+
+
+Icon widget don't have ontap attribute so we wrap it in a gesture widget
+
+
+
+GestureDetector(
+                child:Icon(Icons.delete, color: Colors.grey),
+                onTap: (){
+                  _delete(context, noteList[position]) ;
+                  
+                },),
+                
+
+
+ note.date= DateFormat.yMMMd().format(DateTime.now()) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+   
+
+
+   
