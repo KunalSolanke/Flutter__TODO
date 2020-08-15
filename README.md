@@ -1,4 +1,4 @@
-# flutterap
+# flutterapp
 
 A new Flutter module.
 
